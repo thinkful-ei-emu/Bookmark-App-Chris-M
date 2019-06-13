@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bookmark App</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+    <div class="title-bar">
+        <h1>My Bookmarks</h1>
+            <form id='js-rating-form'>
+            <button type="button" class="add-bookmark">Add Bookmark</button>
+            <select name="Minimum Rating">
+            <option value="None">None</option>
+            <option value="1 Star">1 Star</option>
+            <option value="2 Stars">2 Star</option>
+            <option value="3 Stars">3 Star</option>
+            <option value="4 Stars">4 Star</option>
+            <option value="5 Stars">5 Star</option>
+            </select>            
+        </form>
+    </div>
+    <div class="container">
+        <div class="error-message hidden"></div>
+        
+        <ul class="bookmark-list js-bookmark-list">
+            <li>
+                <p class='list-header'>test</p>
+                <p class='description-title'>Description</p>
+                <p class='description-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                    Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, 
+                    non pulvinar lorem felis nec erat</p>
+                <div class="bookmark-controls">
+                    <button class="bookmark-site js-visit-site">
+                            <span class="button-label">Visit Site</span>
+                        </button>                
+                    <button class="bookmark-edit js-bookmark-edit">
+                            <span class="button-label">edit</span>
+                    </button>
+                    <button class="bookmark-remove js-bookmark-remove">
+                            <span class="button-label">remove</span>
+                    </button>
+                </div>
+            </li>
+            <li>test</li>
+            <li>test</li>
+            <li>test</li>
+        </ul>
+        </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="scripts/bookmark.js"></script>
+    <script type="text/javascript" src="scripts/store.js"></script>
+    <script type="text/javascript" src="scripts/bookmark-list.js"></script>
+    <script type="text/javascript" src="scripts/api.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

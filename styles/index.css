@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .title-bar {
+      display: block;
+      text-align: center;
+  }
+  
+  button, input[type="text"] {
+    padding: 5px;
+  }
+  
+  button:hover {
+    cursor: pointer;
+  }
+
+  .bookmark-list {
+    list-style: none;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .bookmark-list > li {
+    margin-bottom: 20px;
+    border: 1px solid grey;
+    padding: 20px;
+  }
+  
+  .bookmark-item {
+    display: block;
+    color: grey;
+    font-style: italic;
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
