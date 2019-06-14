@@ -4,11 +4,21 @@
   
   body {
     font-family: 'Roboto', sans-serif;
+    background-color: #F2F3D9;
   }
 
-  .title-bar {
-      display: block;
-      text-align: center;
+  header {
+    position: sticky;
+    top: 0;
+    display: block;
+    text-align: center;
+    background-color: #253C78;
+    color: #F1E9DA;
+    padding-bottom: 5px;
+  }
+
+  .add-bookmark > div {
+    margin-bottom: 10px;
   }
   
   button, input[type="text"] {
@@ -25,14 +35,13 @@
 
   .bookmark-list {
     list-style: none;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
   }
 
   .bookmark-list > li {
     margin-bottom: 20px;
     border: 1px solid grey;
-    padding: 20px;
   }
   
   .bookmark-item {
@@ -42,3 +51,58 @@
     font-size: 20px;
     margin-bottom: 15px;
   }
+
+  .bookmark-title {
+    font-weight: bolder;
+    margin-left: 10px;
+  }
+
+  .description-title {
+    font-weight: bold;
+    margin-left: 15px;
+  }
+
+  .description-text, .bookmark-controls {
+    margin: 0 10px 10px 30px;
+  }
+
+  .title {
+    display: inline-flex;
+    flex-direction: row;
+  }
+
+   @media screen and (min-width: 600px) {
+     header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+     }
+
+     .bookmark-list {
+       display: flex;
+       flex-flow: row wrap;
+       justify-content: space-around;
+       
+     }
+
+     li {
+      margin-right: 30px;
+       margin-top: 25px;
+       min-width: 300px;
+     }
+
+     .add-bookmark {
+       position:absolute;
+       margin-left: auto;
+       margin-right: auto;
+       left: 0;
+       right: 0;
+       background-color: #D90368;
+       padding: 20px 0px 20px;
+       width: 50%;
+       height: 250px;
+       color: #F2F3D9;
+     }
+
+   }

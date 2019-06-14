@@ -7,11 +7,11 @@
     <title>Bookmark App</title>
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
-    <div class="title-bar">
+    <header class="title-bar">
         <h1>My Bookmarks</h1>
         <form id='js-bookmark-button-form' action="#">
             <button type="button" class="add-bookmark-button">Add Bookmark</button>
@@ -48,18 +48,18 @@
             </form>
         </div>
         <form id='js-rating-form' action="#">
-            <div>
-                <label for="rating-filter">Minimum Rating Filter (1-5):</label>
-                <select type="number" id="rating-filter" name="rating-filter">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>                    
-            </div>
-        </form>
-    </div>
+                <div>
+                    <label for="rating-filter">Minimum Rating Filter (1-5):</label>
+                    <select type="number" id="rating-filter" name="rating-filter">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                          </select>                    
+                </div>
+            </form>
+    </header>
     <div class="container">
         <div class="error-message hidden"></div>
         
