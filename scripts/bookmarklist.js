@@ -7,6 +7,7 @@ const bookmarklist = (function(){
 
   function generateBookmarkElement(bookmark) {
     const expandClass = bookmark.expanded ? '' : 'hidden';
+    const expandText = bookmark.expanded ? 'collapse' : 'expand';
 
     if (bookmark.edit) {
       return `        
@@ -21,7 +22,7 @@ const bookmarklist = (function(){
                     <option value="4">4</option>
                     <option value="5">5</option>
             </select>
-            <button type="button" class="js-expand">expand</button>
+            <button type="button" class="js-expand">${expandText}</button>
         </p>
         <div class="${expandClass} js-expand-collapse">
             <p class='description-title'>Description</p>
@@ -46,9 +47,9 @@ const bookmarklist = (function(){
       return `
         <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
             <div class='list-header'>
-                <p class="bookmark-title title">${bookmark.title}</p>
+                <p class="bookmark-title title">${bookmark.title} -</p>
                 <p class="ratings-text title">Rating: ${bookmark.rating} stars</p>
-                <p class="margin-right title"><button type="button" class="js-expand" id="js-expand">expand</button></p>
+                <p class="margin-right title"><button type="button" class="js-expand" id="js-expand">${expandText}</button></p>
             </div>
             <div class="${expandClass} js-expand-collapse">
                 <p class='description-title'>Description</p>
@@ -173,13 +174,7 @@ const bookmarklist = (function(){
       let bookmark = store.findById(id);
       let opposite = {
         expanded: !bookmark.expanded
-      };
-      //   if (!bookmark.expanded) {
-      //     $('.js-expand').text('expand');
-      //   }
-      //   else {
-      //     $('.js-expand').text('collapse');
-      //   }
+      };      
       store.findAndUpdate(id, opposite);
       render();    
     });
