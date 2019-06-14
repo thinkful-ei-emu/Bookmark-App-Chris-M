@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use strict';
 /* global store, $, api*/
 
@@ -7,29 +8,65 @@ const bookmarklist = (function(){
   function generateBookmarkElement(bookmark) {
     const expandClass = bookmark.expanded ? '' : 'hidden';
 
-    return `
-    <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
+    if (bookmark.edit) {
+      return `        
+        <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
+        <form class="js-edit-bookmark" id="js-edit-bookmark">
         <p class='list-header'>
-            <span class="bookmark-title">${bookmark.title}</span>
-            <span>rating:${bookmark.rating}</span>
+            <input class="title" name="title" type="text" value="${bookmark.title}" />
+            <select type="number" name="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+            </select> 
             <button type="button" class="js-expand">expand</button>
         </p>
         <div class="${expandClass} js-expand-collapse">
             <p class='description-title'>Description</p>
-            <p class='description-text'>${bookmark.desc}</p>
+            <textarea type="text" name="desc" placeholder="Enter Description">${bookmark.desc}</textarea>
+            <button type="submit" name="submit" id="submit" value="Submit">Submit</button>
             <div class="bookmark-controls">
-            <button class="bookmark-site js-visit-site" target="_blank" onclick="window.open('${bookmark.url}','newwindow');">
-                        <span class="button-label">Visit Site</span>
-                    </button>                
+                <button class="bookmark-site js-visit-site" target="_blank" onclick="window.open('${bookmark.url}','newwindow');">
+                    <span class="button-label">Visit Site</span>
+                </button>                
                 <button class="bookmark-edit js-bookmark-edit">
-                        <span class="button-label">edit</span>
+                    <span class="button-label">edit</span>
                 </button>
                 <button class="bookmark-remove js-bookmark-remove">
-                        <span class="button-label">remove</span>
+                    <span class="button-label">remove</span>
                 </button>
             </div>
         </div>
+        </form>
     </li>`;
+    }
+    else {
+      return `
+        <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
+            <p class='list-header'>
+                <span class="bookmark-title">${bookmark.title}</span>
+                <span>rating:${bookmark.rating}</span>
+                <button type="button" class="js-expand" id="js-expand">expand</button>
+            </p>
+            <div class="${expandClass} js-expand-collapse">
+                <p class='description-title'>Description</p>
+                <p class='description-text'>${bookmark.desc}</p>
+                <div class="bookmark-controls">
+                <button class="bookmark-site js-visit-site" target="_blank" onclick="window.open('${bookmark.url}','newwindow');">
+                    <span class="button-label">Visit Site</span>
+                </button>                
+                <button class="bookmark-edit js-bookmark-edit">
+                    <span class="button-label">edit</span>
+                </button>
+                <button class="bookmark-remove js-bookmark-remove">
+                    <span class="button-label">remove</span>
+                </button>
+                </div>
+            </div>
+        </li>`;
+    }
   }
 
   function generateBookmarkString(bookmarklist) {
@@ -50,7 +87,6 @@ const bookmarklist = (function(){
     if (store.filterTerm) {
       bookmarks = bookmarks.filter(bookmark => bookmark.rating >= store.filterTerm);
     }
-    console.log(store.filterTerm);
     const bookmarkListString = generateBookmarkString(bookmarks);
     $('.js-bookmark-list').html(bookmarkListString);
 
@@ -68,7 +104,7 @@ const bookmarklist = (function(){
     const formData = new FormData(form);
     let o = {};
     formData.forEach((val, name) => o[name] = val);
-    return JSON.stringify(o);
+    return o;
   }
 
   function handleCloseButtonSubmit() {
@@ -126,25 +162,24 @@ const bookmarklist = (function(){
   function handleErrorMessageClose() {
     $('.error-message').on('click','#js-error-close',event => {
       event.preventDefault();
-      console.log('hello');
       $('.error-message').addClass('hidden');
     });
   }
 
   function handleBookmarkExpandClicked() {
     $('.js-bookmark-list').on('click', '.js-expand', event => {
-      console.log('`handleItemCheckClicked` ran');
+      console.log('`handleBookmarkExpandClicked` ran');
       const id = getBookmarkIdFromElement(event.target);
       let bookmark = store.findById(id);
       let opposite = {
         expanded: !bookmark.expanded
       };
-      //   if (!bookmark.expanded) {
-      //     $('.js-expand').text('expand');
-      //   }
-      //   else {
-      //     $('.js-expand').text('collapse');
-      //   }
+      if (!bookmark.expanded) {
+        $('.js-expand').text('expand');
+      }
+      else {
+        $('.js-expand').text('collapse');
+      }
       store.findAndUpdate(id, opposite);
       render();    
     });
@@ -158,6 +193,35 @@ const bookmarklist = (function(){
     });
   }
 
+  function handleBookmarkStartEditing() {
+    $('.js-bookmark-list').on('click', '.js-bookmark-edit', event => {
+      console.log('`handleBookmarkStartEditing` ran');
+      const id = getBookmarkIdFromElement(event.target);
+      store.setBookmarkIsEditing(id, true);
+      render();
+    });
+  }
+
+  function handleEditBookmarkItemSubmit() {
+    $('.js-bookmark-list').on('submit', '.js-edit-bookmark', event => {
+      event.preventDefault();
+      console.log('`handleEditBookmarkItemSubmit` ran');
+      const id = getBookmarkIdFromElement(event.currentTarget);
+      let formElement = $('#js-edit-bookmark')[0]; //should use event.currentTarget to hit the right form
+      let newBookmarkName = serializeJson(formElement);
+      api.updateBookmark(id, newBookmarkName)
+        .then(() => {
+          store.findAndUpdate(id, newBookmarkName);
+          store.setBookmarkIsEditing(id, false);
+          render();        
+        })
+        .catch(err => {
+          store.errorKey = `Error, try again. ${api.error.message}`;
+          render();
+        });
+    });
+  }
+
   function bindEventListeners() {
     handleNewBookmarkSubmit();
     handleDeleteBookmarkClicked();
@@ -166,6 +230,8 @@ const bookmarklist = (function(){
     handleRatingsFilter();
     handleCloseButtonSubmit();
     handleErrorMessageClose();
+    handleBookmarkStartEditing();
+    handleEditBookmarkItemSubmit();
   }
 
   return {

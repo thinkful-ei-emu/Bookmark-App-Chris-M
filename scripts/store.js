@@ -31,6 +31,11 @@ const store = (function(){
     this.filterTerm = term;
   };
 
+  const setBookmarkIsEditing = function(id, edit) {
+    const bookmark = this.findById(id);
+    bookmark.edit = edit;
+  };
+
   return {
     bookmarks: [],
     newBMButton: false,
@@ -41,6 +46,7 @@ const store = (function(){
     findAndDelete,
     toggleExpandedBookmark,
     findAndUpdate,
-    setFilterTerm
+    setFilterTerm,
+    setBookmarkIsEditing
   };
 }());

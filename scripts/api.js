@@ -36,12 +36,13 @@ let api = (function() {
   }
 
   function createBookmark(newBookmarkName) {
+    let uData = JSON.stringify(newBookmarkName);
     return listApiFetch(`${BASE_URL}/bookmarks`, {
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
-      body: newBookmarkName
+      body: uData
     });
   }
 
@@ -54,10 +55,22 @@ let api = (function() {
     });
   }
 
+  function updateBookmark(id, updateData){
+    let uData = JSON.stringify(updateData);
+    return listApiFetch(`${BASE_URL}/bookmarks/${id}`, {
+      method: 'PATCH',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: uData
+    });
+  }
+
   return {
     getBookmarks,
     createBookmark,
-    deleteBookmark
+    deleteBookmark,
+    updateBookmark
   };
 
 }());
